@@ -1,0 +1,5 @@
+@layer constantcss {
+    .test-class {
+        color: red;
+    }
+}

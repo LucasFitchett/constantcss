@@ -1,4 +1,4 @@
 # ConstantCSS
-Open source Utility-first CSS framework for WordPress.
+Open source utility-first CSS framework for WordPress.
 
-Work in progress
+Work in progress.

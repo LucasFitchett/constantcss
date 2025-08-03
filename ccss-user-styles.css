@@ -1,0 +1,11 @@
+@layer constantcss {
+	:root {
+		--ccss-color-primary: #8245bf;
+		--ccss-color-primary-light: #9c6bcc;
+		--ccss-color-primary-ultralight: #b591d9;
+		--ccss-color-primary-dark: #69369b;
+		--ccss-color-primary-ultradark: #4f2876;
+		--ccss-color-primary-hover: #9c6bcc;
+		--ccss-button-border-radius: 999em;
+	}
+}

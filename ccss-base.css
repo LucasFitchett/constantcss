@@ -1,60 +1,102 @@
 @layer constantcss {
     :root {
-        --text-xs: clamp(0.56rem, 0.4974rem + 0.2783vw, 0.72rem);
-        --text-sm: clamp(0.7rem, 0.6217rem + 0.3478vw, 0.9rem);
-        --text-base: clamp(0.875rem, 0.7772rem + 0.4348vw, 1.125rem);
-        --text-lg: clamp(1.0938rem, 0.9715rem + 0.5435vw, 1.4063rem);
-        --text-xl: clamp(1.3672rem, 1.2143rem + 0.6793vw, 1.7578rem);
-        --text-2xl: clamp(1.709rem, 1.5179rem + 0.8492vw, 2.1973rem);
-        --text-3xl: clamp(2.1362rem, 1.8974rem + 1.0615vw, 2.7466rem);
-        --text-4xl: clamp(2.6703rem, 2.3717rem + 1.3269vw, 3.4332rem);
+        --text-xs: clamp(0.6331rem, 0.6427rem + -0.0119vw, 0.64rem);
+        --text-sm: clamp(0.8rem, 0.7828rem + 0.0765vw, 0.844rem);
+        --text-base: clamp(1rem, 0.9511rem + 0.2174vw, 1.125rem);
+        --text-lg: clamp(1.25rem, 1.1523rem + 0.4341vw, 1.4996rem);
+        --text-xl: clamp(1.5625rem, 1.3917rem + 0.7591vw, 1.999rem);
+        --text-2xl: clamp(1.9531rem, 1.6747rem + 1.2375vw, 2.6647rem);
+        --text-3xl: clamp(2.4414rem, 2.0068rem + 1.9315vw, 3.552rem);
+        --text-4xl: clamp(3.0518rem, 2.3932rem + 2.9271vw, 4.7348rem);
+        --space-3xs: clamp(0.25rem, 0.2255rem + 0.1087vw, 0.3125rem);
+        --space-2xs: clamp(0.5rem, 0.4755rem + 0.1087vw, 0.5625rem);
+        --space-xs: clamp(0.75rem, 0.7011rem + 0.2174vw, 0.875rem);
+        --space-s: clamp(1rem, 0.9511rem + 0.2174vw, 1.125rem);
+        --space-m: clamp(1.5rem, 1.4266rem + 0.3261vw, 1.6875rem);
+        --space-l: clamp(2rem, 1.9022rem + 0.4348vw, 2.25rem);
+        --space-xl: clamp(3rem, 2.8533rem + 0.6522vw, 3.375rem);
+        --space-2xl: clamp(4rem, 3.8043rem + 0.8696vw, 4.5rem);
+        --space-3xl: clamp(6rem, 5.7065rem + 1.3043vw, 6.75rem);
+        --space-4xl: clamp(10rem, 9.5109rem + 2.1739vw, 11.25rem);
+        --space-5xl: clamp(20rem, 19.0217rem + 4.3478vw, 22.5rem);
+    }
+
+    html {
+        font-size: 100%;
+    }
+
+    body {
+        font-size: var(--text-base);
     }
 
     .text-xs {
         font-size: var(--text-xs);
+        line-height: 1.5;
     }
 
     .text-sm {
         font-size: var(--text-sm);
+        line-height: 1.5;
     }
 
     .text-base {
         font-size: var(--text-base);
+        line-height: 1.5;
     }
 
     .text-lg {
         font-size: var(--text-lg);
+        line-height: 1.4;
     }
 
     .text-xl {
         font-size: var(--text-xl);
+        line-height: 1.2;
     }
 
     .text-2xl {
         font-size: var(--text-2xl);
+        line-height: 1.2;
     }
 
     .text-3xl {
         font-size: var(--text-3xl);
+        line-height: 1.2;
     }
 
     .text-4xl {
         font-size: var(--text-4xl);
+        line-height: 1.2;
     }
 
     .text-5xl {
         font-size: var(--text-5xl);
+        line-height: 1;
     }
 
     .btn-primary {
+        font-weight: 500;
         background-color: var(--ccss-color-primary);
         color: white;
         transition: background-color 100ms ease;
         cursor: pointer;
-    }
-
-    .btn-primary:hover {
-        background-color: var(--ccss-color-primary-hover);
+        border: 2px solid var(--ccss-color-primary);
+        padding: 0.75em 1.5em;
+        border-radius: var(--ccss-button-border-radius);
+        line-height: 1;
+        &:hover {
+            background-color: var(--ccss-color-primary-hover);
+            border: 2px solid var(--ccss-color-primary-hover);
+        }
+        &.btn-outline {
+            border: 2px solid var(--ccss-color-primary);
+            background-color: transparent;
+            color: var(--ccss-color-primary);
+            &:hover {
+                background-color: var(--ccss-color-primary);
+                color: white;
+            }
+        }
     }
 
     .bg-primary {
@@ -79,5 +121,28 @@
 
     .bg-primary-hover {
         background-color: var(--ccss-color-primary-hover);
+    }
+}
+
+.grid {
+    display: grid;
+    gap: var(--space-m);
+    &.cols-1 {
+        grid-template-columns: 1fr;
+    }
+    &.cols-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+    &.cols-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    &.cols-4 {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    &.cols-1-2 {
+        grid-template-columns: 1fr 2fr;
+    }
+    &.cols-2-1 {
+        grid-template-columns: 2fr 1fr;
     }
 }

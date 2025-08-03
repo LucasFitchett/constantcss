@@ -19,13 +19,21 @@ if (!defined("ABSPATH")) {
 
 class ConstantCSS
 {
+    protected $css_content = "@layer constantcss {\n\t:root {\n";
+    protected $colors = [];
+    protected $button_border_radius = "";
+
     public function __construct()
     {
         add_action("admin_menu", [$this, "ccss_settings_page"]);
         add_action("admin_init", [$this, "ccss_settings_init"]);
         add_action("update_option_ccss_color_primary", [
             $this,
-            "ccss_generate_shades",
+            "ccss_generate_colors",
+        ]);
+        add_action("update_option_ccss_button_border_radius", [
+            $this,
+            "ccss_generate",
         ]);
         add_action("wp_enqueue_scripts", [$this, "enqueue_ccss_files"], 999);
     }
@@ -35,7 +43,7 @@ class ConstantCSS
         wp_enqueue_style("ccss-base", plugins_url("ccss-base.css", __FILE__));
         wp_enqueue_style(
             "ccss-colors",
-            plugins_url("ccss-colors.css", __FILE__),
+            plugins_url("ccss-user-styles.css", __FILE__),
         );
     }
 
@@ -63,6 +71,18 @@ class ConstantCSS
             "ccss",
             "ccss_section_colors",
         );
+
+        register_setting("ccss", "ccss_button_border_radius");
+
+        add_settings_section("ccss_section_buttons", "Buttons", "", "ccss");
+
+        add_settings_field(
+            "ccss_button_border_radius",
+            "Border radius",
+            [$this, "ccss_field_button_callback"],
+            "ccss",
+            "ccss_section_buttons",
+        );
     }
 
     public function ccss_settings_page_html(): void
@@ -83,13 +103,28 @@ class ConstantCSS
     public function ccss_field_colors_primary_callback(): void
     {
         ?>
-            <input type="color" name="ccss_color_primary" value="<?= esc_attr(
-                get_option("ccss_color_primary", "#ff0000"),
-            ) ?>" />
-    <?php
+            <input
+                type="color"
+                name="ccss_color_primary"
+                value="<?= esc_attr(
+                    get_option("ccss_color_primary", "#ff0000"),
+                ) ?>"
+            />
+        <?php
     }
 
-    public function ccss_generate_shades(): void
+    public function ccss_field_button_callback(): void
+    {
+        ?>
+            <input
+                type="text"
+                name="ccss_button_border_radius"
+                value="<?= esc_attr(get_option("ccss_button_border_radius")) ?>"
+            />
+        <?php
+    }
+
+    public function ccss_generate_colors(): void
     {
         $user_primary_color = get_option("ccss_color_primary");
         $primary_color = new Color($user_primary_color);
@@ -103,17 +138,27 @@ class ConstantCSS
             "primary-hover" => $primary_color->lighten(10),
         ];
 
-        $css_content = "@layer constantcss {\n\t:root {\n";
+        update_option("ccss_colors", $new_colors);
 
-        foreach ($new_colors as $name => $color) {
-            $css_content .= "\t\t--ccss-color-$name: #$color;\n";
+        $this->ccss_generate();
+    }
+
+    public function ccss_generate(): void
+    {
+        $colors = get_option("ccss_colors");
+        $button_border_radius = get_option("ccss_button_border_radius");
+
+        foreach ($colors as $name => $color) {
+            $this->css_content .= "\t\t--ccss-color-$name: #$color;\n";
         }
 
-        $css_content .= "\t}\n}";
+        $this->css_content .= "\t\t--ccss-button-border-radius: $button_border_radius;\n";
 
-        $css_file_path = plugin_dir_path(__FILE__) . "ccss-colors.css";
+        $this->css_content .= "\t}\n}";
 
-        if (file_put_contents($css_file_path, $css_content) === false) {
+        $css_file_path = plugin_dir_path(__FILE__) . "ccss-user-styles.css";
+
+        if (file_put_contents($css_file_path, $this->css_content) === false) {
             wp_die("Failed to write CSS file");
         }
     }
